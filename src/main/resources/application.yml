@@ -1,0 +1,62 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: tracking-number-generator
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tracking_db
+    driver-class-name: org.postgresql.Driver
+    password: root
+    username: root
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# Async Pool Config
+async:
+  corePoolSize: 10
+  maxPoolSize: 50
+  queueCapacity: 100
+  keepAliveSeconds: 30
+  waitTerminationSeconds: 10
+  threadNamePrefix: TrackingNumberThread-
+  waitForTasksToCompleteOnShutdown: true
+
+# Actuator
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      path-mapping:
+        health: /health
+        info: /info
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+#Spring Doc
+springdoc:
+  api-docs:
+    enabled: true
+    path: /tracking-number-generator
+  swagger-ui:
+    path: /index.html
+    disable-swagger-default-url: true
